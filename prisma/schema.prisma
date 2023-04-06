@@ -11,8 +11,116 @@ datasource db {
     relationMode = "prisma"
 }
 
-model Example {
+model Post {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    content   String
+    authorId  String
+
+    @@index([authorId])
 }
+
+// model User {
+//     id               String            @id @default(cuid())
+//     firstName        String?
+//     lastName         String?
+//     email            String            @unique
+//     accountStatus    String // enum AccountStatus { CONFIRM_EMAIL ACTIVE UNKNOWN}
+//     textEntries      TextEntry[]
+//     voiceEntries     VoiceEntry[]
+//     wordCloud        WordCloud[]
+//     commonNarratives CommonNarrative[]
+//     thoughtPatterns  ThoughtPattern[]
+//     createdAt        DateTime          @default(now())
+//     updatedAt        DateTime          @updatedAt
+//     Pinned           Pinned[]
+
+//     // DB AUTH VALUES DO NOT ALTER
+//     hashedPassword      String
+//     salt                String
+//     resetToken          String?
+//     resetTokenExpiresAt DateTime?
+//     roles               String
+// }
+
+// model TextEntry {
+//     id        String   @id @default(cuid())
+//     title     String?
+//     entry     String
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+//     userId    String
+//     User      User     @relation(fields: [userId], references: [id])
+
+//     @@index([userId])
+// }
+
+// model VoiceEntry {
+//     id        String   @id @default(cuid())
+//     title     String?
+//     entry     String
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+//     userId    String
+//     User      User     @relation(fields: [userId], references: [id])
+
+//     @@index([userId])
+// }
+
+// model WordCloud {
+//     id        String   @id @default(cuid())
+//     title     String?
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+//     words     Word[]
+//     userId    String
+//     User      User     @relation(fields: [userId], references: [id])
+
+//     @@index([userId])
+// }
+
+// model CommonNarrative {
+//     id        String   @id @default(cuid())
+//     title     String?
+//     narrative String
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+//     userId    String
+//     User      User     @relation(fields: [userId], references: [id])
+
+//     @@index([userId])
+// }
+
+// model ThoughtPattern {
+//     id        String   @id @default(cuid())
+//     title     String?
+//     pattern   String
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+//     userId    String
+//     User      User     @relation(fields: [userId], references: [id])
+
+//     @@index([userId])
+// }
+
+// model Word {
+//     id          Int       @id @default(autoincrement())
+//     word        String
+//     rating      Int
+//     wordCloudId String
+//     wordClouds  WordCloud @relation(fields: [wordCloudId], references: [id])
+
+//     @@index([wordCloudId])
+// }
+
+// model Pinned {
+//     id         Int      @id @default(autoincrement())
+//     title      String?
+//     pinnedItem String
+//     createdAt  DateTime @default(now())
+//     updatedAt  DateTime @updatedAt
+//     userId     String
+//     User       User     @relation(fields: [userId], references: [id])
+
+//     @@index([userId])
+// }
