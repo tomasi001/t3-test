@@ -52,7 +52,7 @@ const PostView = (props: PostWithUser) => {
             post.createdAt
           ).fromNow()}`}</span>
         </div>
-        <span>{post.content}</span>
+        <span className="text-xl">{post.content}</span>
       </div>
     </div>
   );
@@ -73,15 +73,13 @@ const Feed = () => {
   );
 };
 const Home: NextPage = () => {
-  const { user, isLoaded: userLoaded, isSignedIn } = useUser();
+  const { isLoaded: userLoaded, isSignedIn } = useUser();
   // since data is cached unless changed
   // we can trigger the call early to
   // ensure rapid data fetching
   api.post.getAll.useQuery();
 
   if (!userLoaded) return <LoadingPage />;
-
-  if (!user) return <div>Something went wrong</div>;
 
   return (
     <>
