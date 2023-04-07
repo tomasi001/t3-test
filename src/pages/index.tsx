@@ -5,7 +5,8 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { api, RouterOutputs } from "~/utils/api";
+import { api } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
 import { LoadingPage, LoadingComponent } from "~/components/LoadingSpinner";
 
 dayjs.extend(relativeTime);

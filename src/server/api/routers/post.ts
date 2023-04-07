@@ -1,4 +1,4 @@
-import { User } from "@clerk/nextjs/dist/api";
+import type { User } from "@clerk/nextjs/dist/api";
 import { clerkClient } from "@clerk/nextjs/server";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -33,9 +33,14 @@ export const postRouter = createTRPCRouter({
           message: "Author for post not found",
         });
 
+      console.log(author.username);
+
       return {
         post,
-        author,
+        author: {
+          ...author,
+          username: author.username,
+        },
       };
     });
   }),
