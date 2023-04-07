@@ -62,6 +62,7 @@ const Feed = () => {
   if (postsLoading) return <LoadingComponent />;
 
   if (!data) return <div>Something went wrong</div>;
+
   return (
     <div className="flex flex-col">
       {[...data, ...data]?.map((fullPost) => (
