@@ -1,8 +1,26 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { LoadingPage } from "~/components/Loading";
+import PostView from "~/components/Posts/postView";
 import PageLayout from "~/layouts/page";
 import { api } from "~/utils/api";
+
+const ProfileFeed = ({ userId }: { userId: string }) => {
+  const { data, isLoading } = api.posts.getPostByUserId.useQuery({ userId });
+
+  if (isLoading) return <LoadingPage />;
+
+  if (!data || data.length === 0) return <div>User has not posted</div>;
+
+  return (
+    <div className="flex flex-col">
+      {data.map((fullPost) => {
+        return <PostView key={fullPost.post.id} {...fullPost} />;
+      })}
+    </div>
+  );
+};
 
 const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   const { data } = api.profile.getUserByUsername.useQuery({
@@ -30,22 +48,16 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
           data.username ?? ""
         }`}</div>
         <div className="w-full border-b border-slate-400"></div>
+        <ProfileFeed userId={data.id} />
       </PageLayout>
     </>
   );
 };
 
-import { createProxySSGHelpers } from "@trpc/react-query/ssg";
-import superjson from "superjson";
-import { appRouter } from "~/server/api/root";
-import { prisma } from "~/server/db";
+import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const ssg = createProxySSGHelpers({
-    router: appRouter,
-    ctx: { prisma, userId: null },
-    transformer: superjson, // optional - adds superjson serialization
-  });
+  const ssg = generateSSGHelper();
 
   const slug = context.params?.slug;
 
