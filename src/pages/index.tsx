@@ -50,7 +50,7 @@ const CreatePostWizard = () => {
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            if (input! === "") {
+            if (input !== "") {
               mutate({ content: input });
             }
           }
