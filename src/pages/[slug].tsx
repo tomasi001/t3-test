@@ -1,11 +1,13 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { LoadingPage } from "~/components/Loading";
+import PostView from "~/components/Posts/postView";
 import PageLayout from "~/layouts/page";
 import { api } from "~/utils/api";
 
 const ProfileFeed = ({ userId }: { userId: string }) => {
-  const { data, isLoading } = api.post.getPostByUserId.useQuery({ userId });
+  const { data, isLoading } = api.posts.getPostByUserId.useQuery({ userId });
 
   if (isLoading) return <LoadingPage />;
 
@@ -52,19 +54,10 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   );
 };
 
-import { createProxySSGHelpers } from "@trpc/react-query/ssg";
-import superjson from "superjson";
-import { appRouter } from "~/server/api/root";
-import { prisma } from "~/server/db";
-import { LoadingPage } from "~/components/Loading";
-import PostView from "~/components/Posts/postView";
+import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const ssg = createProxySSGHelpers({
-    router: appRouter,
-    ctx: { prisma, userId: null },
-    transformer: superjson, // optional - adds superjson serialization
-  });
+  const ssg = generateSSGHelper();
 
   const slug = context.params?.slug;
 

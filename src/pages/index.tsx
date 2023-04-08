@@ -12,10 +12,10 @@ const CreatePostWizard = () => {
   const { user } = useUser();
   const [input, setInput] = useState("");
   const ctx = api.useContext();
-  const { mutate, isLoading: isPosting } = api.post.create.useMutation({
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
       setInput("");
-      void ctx.post.getAll.invalidate();
+      void ctx.posts.getAll.invalidate();
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors.content;
@@ -62,7 +62,7 @@ const CreatePostWizard = () => {
 };
 
 const Feed = () => {
-  const { data, isLoading: postsLoading } = api.post.getAll.useQuery();
+  const { data, isLoading: postsLoading } = api.posts.getAll.useQuery();
 
   if (postsLoading) return <LoadingPage />;
 
@@ -81,7 +81,7 @@ const Home: NextPage = () => {
   // since data is cached unless changed
   // we can trigger the call early to
   // ensure rapid data fetching
-  api.post.getAll.useQuery();
+  api.posts.getAll.useQuery();
 
   if (!userLoaded) return <LoadingPage />;
 
