@@ -4,9 +4,9 @@ on: [push, pull_request]
 
 env:
   DATABASE_URL: "https://fake.com"
-  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "https://fake.com",
-  CLERK_SECRET_KEY: "https://fake.com",
-  UPSTASH_REDIS_REST_URL: "https://fake.com",
+  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "https://fake.com"
+  CLERK_SECRET_KEY: "https://fake.com"
+  UPSTASH_REDIS_REST_URL: "https://fake.com"
   UPSTASH_REDIS_REST_TOKEN: "https://fake.com"
 
 jobs:
