@@ -7,8 +7,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
-import { LoadingPage, LoadingComponent } from "~/components/LoadingSpinner";
+import { LoadingComponent, LoadingPage } from "~/components/LoadingSpinner";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 dayjs.extend(relativeTime);
 
@@ -20,6 +21,13 @@ const CreatePostWizard = () => {
     onSuccess: () => {
       setInput("");
       void ctx.post.getAll.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      }
     },
   });
   if (!user) return null;
@@ -39,9 +47,21 @@ const CreatePostWizard = () => {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (input! == "") {
+              mutate({ content: input });
+            }
+          }
+        }}
         disabled={isPosting}
       />
-      <button onClick={() => mutate({ content: input })}>Post</button>
+
+      {input !== "" && !isPosting && (
+        <button onClick={() => mutate({ content: input })}>Post</button>
+      )}
+      {isPosting === true && <LoadingComponent />}
     </div>
   );
 };
@@ -74,7 +94,7 @@ const PostView = (props: PostWithUser) => {
 const Feed = () => {
   const { data, isLoading: postsLoading } = api.post.getAll.useQuery();
 
-  if (postsLoading) return <LoadingComponent />;
+  if (postsLoading) return <LoadingPage />;
 
   if (!data) return <div>Something went wrong</div>;
 

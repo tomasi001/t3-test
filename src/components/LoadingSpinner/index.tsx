@@ -9,7 +9,13 @@ export const LoadingSpinner = () => {
 };
 
 export const LoadingComponent = () => {
-  return <LoadingSpinner />;
+  return (
+    <div className="mr-2 flex h-full items-center justify-center space-x-2">
+      <div className="h-2 w-2 animate-pulse rounded-full dark:bg-white"></div>
+      <div className="h-2 w-2 animate-pulse rounded-full dark:bg-white"></div>
+      <div className="h-2 w-2 animate-pulse rounded-full dark:bg-white"></div>
+    </div>
+  );
 };
 
 export const LoadingPage = () => {
